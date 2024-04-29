@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barcode Scanner</title>
+<!-- Add some CSS for styling -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        text-align: center;
+    }
+    h1 {
+        color: #333;
+    }
+    #reader {
+        margin: 20px auto;
+        max-width: 100%;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    #scanResult {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+    }
+</style>
+<script src="html5-qrcode.min.js"></script>
+</head>
+<body>
+<h1>Barcode Scanner</h1>
+<div id="reader"></div>
+<div id="scanResult"></div>
+<audio id="beepSound" src="beep.mp3" preload="auto"></audio>
+
+
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        const scanResultElement = document.getElementById('scanResult');
+        scanResultElement.innerHTML = `Scan result: ${decodedText}`;
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+    
+        // Play the beep sound
+        const beepSound = document.getElementById('beepSound');
+        beepSound.play();
+    
+        // Vibrate for 200 milliseconds (adjust as needed)
+        if (navigator.vibrate) {
+            navigator.vibrate(200);
+        }
+    }
+    
+    function onScanError(errorMessage) {
+        console.error(errorMessage);
+    }
+    
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+    </script>
+    
+    
+</body>
+</html>
